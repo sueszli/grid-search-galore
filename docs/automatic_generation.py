@@ -356,7 +356,7 @@ def run(arg):
         time = end_time - start_time
 
         if MULTICORE:
-            #TODO implement multicore safe file writing
+            # TODO implement multicore safe file writing
             print(
                 f"dataset: {dataset}, scaling: {scaling}, labeling: {labeling}, imputing: {imputing}, cross_val: {cross_val}, time: {time}, acc: {acc}, classifier_type: {classifier_type}, classifier_config: {config}"
             )
@@ -371,15 +371,16 @@ def run(arg):
             if len(contents) > 2:
                 contents[-2] = contents[-2].replace("\n", ",\n")
 
-            contents.insert(-1, f'\t{"{"}"id": "", "Settings": {json.dumps(arg)}, "Scaling": {add_quotes(scaling) if scaling else scaling}, "Labeling": "{labeling}", "Impute": "{imputing}", "Holdout": {"{"}"Duration": {time}, "Accuracy": {acc}{"}"}{"}"}\r')
-
+            contents.insert(
+                -1,
+                f'\t{"{"}"id": "", "Settings": {json.dumps(arg)}, "Scaling": {add_quotes(scaling) if scaling else scaling}, "Labeling": "{labeling}", "Impute": "{imputing}", "Holdout": {"{"}"Duration": {time}, "Accuracy": {acc}{"}"}{"}"}\r',
+            )
 
             with open(f"reports\\AUTO\\{classifier_type}_{dataset}.json", "w") as f:
                 contents = "".join(contents)
                 f.write(contents)
     except Exception as e:
         print("error:", e)
-
 
 
 if __name__ == "__main__":
@@ -390,7 +391,7 @@ if __name__ == "__main__":
         "scaling": ["mean", "minmax", None],
         "labeling": [True, False],
         "imputing": [True, False],
-        "classifier_type": ["mlp", "knn", "rf"]
+        "classifier_type": ["mlp", "knn", "rf"],
     }
     random_combinations = list(itertools.product(*COMBINATIONS.values()))
     random.shuffle(random_combinations)
