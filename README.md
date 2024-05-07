@@ -48,7 +48,7 @@ random.shuffle(random_combinations)
 this is equivalent to a grid search with 288 unique combinations. to speed things up we use the `multiprocessing` library and a custom signal based `@timeout((x))` decorator to limit the runtime of each configuration to `x` minutes and a custom `@benchmark` decorator to measure the runtime of each configuration. we then benchmarked the runtime of different disk I/O methods to avoid bottlenecks.
 
 <details>
-  <summary> <i> dive into details of what each category! </i> </summary>
+  <summary> <i> details about each search axis and metrics </i> </summary>
 
 <br>
 
