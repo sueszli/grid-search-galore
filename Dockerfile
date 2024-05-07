@@ -10,7 +10,6 @@ VOLUME [ "/workspace" ]
 
 # install python dependencies
 RUN pip install --no-cache-dir numpy pandas --break-system-packages
-RUN pip install --no-cache-dir torch torchvision torchaudio --break-system-packages
 
 # stay alive so we can exec into the container
 CMD ["tail", "-f", "/dev/null"]
