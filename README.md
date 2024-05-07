@@ -67,7 +67,7 @@ _datasets:_
 
     _source:_ https://archive.ics.uci.edu/dataset/848/secondary+mushroom+dataset
 
-    the secondary mushroom dataset is inspired by the original mushroom dataset[^mush] from 1987. the original dataset contains hypothetical information about mushrooms and whether they are edible or poisonous. the features include things like cap shape, cap color, gill color, stalk shape, etc. it was created in 2023 and is intended for binary classification into edible and poisonous mushrooms. it contains 61,068 instances of hypothetical mushrooms with 20 features, including variables like cap diameter, shape, surface, color, and others related to mushroom characteristics. the dataset was simulated based on the mushroom data set by j. schlimmer. the dataset was created as a product of a bachelor thesis at philipps-university marburg.
+    the secondary mushroom dataset is inspired by the [original mushroom dataset](https://archive.ics.uci.edu/dataset/73/mushroom) from 1987. the original dataset contains hypothetical information about mushrooms and whether they are edible or poisonous. the features include things like cap shape, cap color, gill color, stalk shape, etc. it was created in 2023 and is intended for binary classification into edible and poisonous mushrooms. it contains 61,068 instances of hypothetical mushrooms with 20 features, including variables like cap diameter, shape, surface, color, and others related to mushroom characteristics. the dataset was simulated based on the mushroom data set by j. schlimmer. the dataset was created as a product of a bachelor thesis at philipps-university marburg.
 
 -   `reviews`: amazon reviews
 
@@ -229,5 +229,3 @@ for the `congress` dataset, we actually had a tie between knn and rf concerning 
         -   balanced_accuracy: 0.24673
         -   precision: 0.79985
         -   recall: 0.85731
-
-[^mush]: original mushroom dataset: https://archive.ics.uci.edu/dataset/73/mushroom
