@@ -24,6 +24,8 @@
 \/_/
 ```
 
+<br><br><br>
+
 the idea is really simple: for each one of your datasets try every possible combination of preprocessing strategies, models and validation methods from a predefined set of choices. then fine-tune the hyperparameters of the best models with `sklearn.model_selection.GridSearchCV` to see if you can achieve even better results.
 
 here's roughly how it works:
