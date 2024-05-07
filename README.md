@@ -106,8 +106,6 @@ _validation strategies:_
 
 </details>
 
-# findings
-
 ![accuracy score heatmap](./output/viz/heatmap_accuracy_score.png)
 
 ![balanced accuracy score heatmap](./output/viz/heatmap_balanced_accuracy_score.png)
