@@ -47,7 +47,8 @@ random.shuffle(random_combinations)
 
 this is equivalent to a grid search with 288 unique combinations. to speed things up we use the `multiprocessing` library and a custom signal based `@timeout((x))` decorator to limit the runtime of each configuration to `x` minutes and a custom `@benchmark` decorator to measure the runtime of each configuration. we then benchmarked the runtime of different disk I/O methods to avoid bottlenecks.
 
-let's dive into the details of what each category means.
+<details>
+  <summary> <i> click here to dive into the details of what each category! </i> </summary>
 
 _classifiers:_
 
@@ -100,6 +101,8 @@ _validation strategies:_
 
 -   3-fold cross validation
 -   holdout validation with an 80/20 split
+
+</details>
 
 # findings
 
