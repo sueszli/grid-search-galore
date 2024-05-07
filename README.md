@@ -5,8 +5,8 @@
          .-'      `-.
        .'            `.
       /                \
-     ;    grid         ;`    if you don't know what hyperparameters to use,
-     |    search       |;    then just use all of them at once.
+     ;    grid         ;`    beyond just
+     |    search       |;    hyperparameter optimization
      ;    galore       ;|
      '\               / ;
       \`.           .' /
@@ -24,21 +24,26 @@
 \/_/
 ```
 
-# Introduction
+the idea is really simple: for each one of your datasets try every possible combination of preprocessing strategies, models and validation methods from a predefined set of choices. then fine-tune the hyperparameters of the best models with `sklearn.model_selection.GridSearchCV` to see if you can achieve even better results.
 
-This report presents a classification exercise comparing 3 models across 4 diverse datasets.
+here's roughly how it works:
 
-The goal was to examine the impact of dataset size, preprocessing techniques, and hyperparameter tuning on classifier performance. Results were analyzed to identify trends and draw insights into factors driving classification performance (understood as efficiency, accuracy and robustness) across different scenarios.
+```python
+COMBINATIONS = {
+     "dataset": ["congress", "mushroom", "reviews", "seattle"], # dataset
+     "scaling": ["mean", "minmax", None],                       # preprocessing: scaling method
+     "labeling": [True, False],                                 # preprocessing: one-hot encoding or not
+     "imputing": [True, False],                                 # preprocessing: impute missing values or not
+     "classifier_type": ["mlp", "knn", "rf"],                   # classifier
+     "cross_val": [True, False],                                # validation: cross-validation / holdout validation
+}
+random_combinations = list(itertools.product(*COMBINATIONS.values()))
+random.shuffle(random_combinations)
+```
 
-Emphasis is placed on the experimental methodology, providing a framework for comparing classifiers and understanding their behavior under different scenarios.
+here's what each category means:
 
-Obviously there is no one-size-fits-all solution, but the insights gained from this exercise can help guide future decision-making when selecting classifiers and preprocessing techniques for new datasets (in a similar vein to the "No Free Lunch Theorem"[^lunch] in machine learning).
-
-# 1. What datasets did we choose and why?
-
-We selected 4 datasets for this exercise, 2 of which were from a previous exercise and 2 from a Kaggle competition. The datasets were chosen to be diverse in terms of size, number of features and number of classes. This diversity was intended to provide a broad range of scenarios for testing the classifiers.
-
-We gave each of the datasets a code name for easier reference (you will see these names throughout the report):
+# 3 datasets
 
 -   `congress`: Congressional Voting Records
 
@@ -56,6 +61,8 @@ We gave each of the datasets a code name for easier reference (you will see thes
 
     The data is well-structured and has a lot of potential for optimization by ie. using one-hot encoding for the categorical features to speed up the training process.
 
+    _Preprocessing_: As has already been mentioned, this dataset only contains categorical features, so any numerical preprocessing strategies can be disregarded. Due to its entirely categorical nature, labelling and one-hot-encoding are strong candidates for preprocessin, though. Since it also contains missing values, imputation and/or deletion of rows/columns must be considered. Here, we decided to only go with imputation and its associated methods (impute with mode or make "missing" its own new value), as the "unknown"s appear too often and are spread too consistently across the dataset, making deletions of any kind infeasible.
+
 -   `mushroom`: Secondary Mushroom
 
     _Source:_ https://archive.ics.uci.edu/dataset/848/secondary+mushroom+dataset
@@ -67,6 +74,8 @@ We gave each of the datasets a code name for easier reference (you will see thes
     It has a mix of categorical and numerical features, which could make this dataset more challenging to work with, combined with the larger quantity of samples. A performance improvement could maybe be achieved by finding the features with the strongest correlation to the target variable and focusing on them to reduce the dimensionality of the dataset.
 
     We chose this dataset to see how the classifiers perform on a larger dataset with a mix of categorical and numerical features.
+
+    _Preprocessing_: This dataset contains both numerical and categorical features, which leaves all preprocessing strategies on the table. For the numerical features, we considered the canon "normal" and "minmax" scaling options. For the categorical data, we went with the usual labelling and one-hot-encoding. Concerning missing values, we again decided that they were spread too consistently across the dataset to make deletion an option, so we went with our already established imputation techniques.
 
 -   `reviews`: Amazon Reviews
 
@@ -81,6 +90,8 @@ We gave each of the datasets a code name for easier reference (you will see thes
     The authors are identified by their unique username, but the review metadata is anonymized, which makes it almost impossible to infer the author from the review content or gain any insights based on intuition / domain knowledge.
 
     The dataset contains 1,000 features and 750 samples. All features are numerical and the target variable is the author of the review. The dataset is well-structured but has an incredibly high dimensionality, which could make it challenging to work with. The dataset is also imbalanced, with some authors having more reviews than others.
+
+    _Preprocessing_: This dataset contains only numerical features and no categorical ones. Additionally, it has no missing values, leaving only scaling as a possible preprocessing strategy.
 
 -   `seattle`: Seattle Crime 6
 
@@ -98,27 +109,7 @@ We gave each of the datasets a code name for easier reference (you will see thes
 
     Also, surprisingly, reading the offline datasets was slower than reading them via the API even though we expected the opposite before benchmarking the runtime. The unreliable performance of the OpenML API could be a concern for users who rely on it for their research.
 
-# 2. How did we find the best model training approach for each dataset?
-
-The methodology that will be presented provides a solid starting point for exploring the relationships between datasets, preprocessing techniques, machine learning models, and their corresponding hyperparameters and validation strategies.
-
-The core strength of our approach lies in its systematic exploration of various combinations of these elements through grid search. By testing different techniques for each dataset, the methodology aims to provide an initial understanding of which configurations might perform well on each dataset, before diving deeper into hyperparameter tuning and performance evaluation and more rigorous comparisons, allowing one to determine whether the differences in performance between various combinations are statistically significant.
-
-## 2.1. Choosing classifiers, preprocessing techniques and metrics for grid search
-
-We started by defining a set of configurations to test the impact of different preprocessing techniques and classifiers on the datasets. The configurations were chosen to cover a wide range of possibilities, including different scaling methods, strategies for handling categorical data, imputation methods, classifier types, and validation techniques. Before delving into the concrete strategy, however, our modus operandi concerning preprocessing, classifier and metric selection will be explained.
-
-### 2.1.1 Preprocessing
-
-The use of preprocessing techniques such as scaling and imputation demonstrates the impact of data makeup and completeness on model performance, particularly as machine learning algorithms can be sensitive to feature ranges and missing values. Accordingly, we chose to apply preprocessing techniques everywhere it made sense in order to supply our models with data they can easily process.
-
-1. `congress`: As has already been mentioned, this dataset only contains categorical features, so any numerical preprocessing strategies can be disregarded. Due to its entirely categorical nature, labelling and one-hot-encoding are strong candidates for preprocessin, though. Since it also contains missing values, imputation and/or deletion of rows/columns must be considered. Here, we decided to only go with imputation and its associated methods (impute with mode or make "missing" its own new value), as the "unknown"s appear too often and are spread too consistently across the dataset, making deletions of any kind infeasible.
-
-2. `mushroom`: This dataset contains both numerical and categorical features, which leaves all preprocessing strategies on the table. For the numerical features, we considered the canon "normal" and "minmax" scaling options. For the categorical data, we went with the usual labelling and one-hot-encoding. Concerning missing values, we again decided that they were spread too consistently across the dataset to make deletion an option, so we went with our already established imputation techniques.
-
-3. `reviews`: This dataset contains only numerical features and no categorical ones. Additionally, it has no missing values, leaving only scaling as a possible preprocessing strategy.
-
-4. `seattle`: Similarly to `mushrooms`, this dataset contains both numerical and categorical features as well as missing values. Accordingly, all of the same preprocessing strategies mentioned for the `mushrooms` dataset can be applied here as well.
+    _Preprocessing_: Similarly to `mushrooms`, this dataset contains both numerical and categorical features as well as missing values. Accordingly, all of the same preprocessing strategies mentioned for the `mushrooms` dataset can be applied here as well.
 
 ### 2.1.2 Classifiers and validation techniques
 
@@ -367,20 +358,6 @@ Accordingly, our ideas concerning improvement either consist of following our cu
 
 As to aid the readability of our code, we decided to include a short explanation outlining the most important parts of our project structure.
 First of all, the `data` directory contains our datasets. We used the `reports` directory to store the most promising results from our experimentation, i.e., our best model training configurations. `main.ipynb` is the file that contains everything needed to train an individual model, including everything from setting preprocessing parameters, running the preprocessing and setting hyperparameter values to of course doing the actual training. The other scripts (except for `fetch_benchmark.py`) are used for our automatic combination testing strategy mentioned in the report.
-
-<!--
-submission: zip file called `Group50_SebastianDanielYahya.zip` containing 10-15 page report, all datasets, all code
-
-kaggle competition (optional):
-
--   5% of points as bonus if you participate by getting your notebook to run on kaggle
--   15% of points as bonus if you are among the 3 best groups on kaggle
--   to participate, submit a csv in the format `<id>,<prediction>` for each of the 2 kaggle datasets. use the notebook name `Group00_NameNameName_dataset[suffix].ipynb` and submit it to the kaggle competition. keep the notebook private and share with the users `rmayer`, `andreaSiposova`
--   there are limited kaggle submissions for the whole class per day, so make sure to start early
--   earlier submissions will be rated higher in case of a tie
-
-hand-in discussions: make sure to register. you will have 30min and will be asked to hold a presentation on your results (you can use slides). every person in the group has to present all parts of the exercise in person or they will immediately fail the entire course.
--->
 
 [^lunch]: Wolpert, D. H., & Macready, W. G. (1997). No free lunch theorems for optimization. IEEE transactions on evolutionary computation, 1(1), 67-82.
 [^mush]: Original Mushroom dataset: https://archive.ics.uci.edu/dataset/73/mushroom
