@@ -50,6 +50,8 @@ this is equivalent to a grid search with 288 unique combinations. to speed thing
 <details>
   <summary> <i> click here to dive into the details of what each category! </i> </summary>
 
+<br>
+
 _classifiers:_
 
 -   `MLP`: multilayer perceptron
