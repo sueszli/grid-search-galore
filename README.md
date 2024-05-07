@@ -103,6 +103,16 @@ _validation strategies:_
 
 # findings
 
+![accuracy score heatmap](./output/viz/heatmap_accuracy_score.png)
+
+![balanced accuracy score heatmap](./output/viz/heatmap_balanced_accuracy_score.png)
+
+![precision score heatmap](./output/viz/heatmap_precision_score.png)
+
+![recall score heatmap](./output/viz/heatmap_recall_score.png)
+
+![time heatmap](./output/viz/heatmap_time.png)
+
 here is an example of a single entry in the json file used to store the benchmark results:
 
 ```
@@ -150,16 +160,6 @@ here is an example of a single entry in the json file used to store the benchmar
 we managed to cover 96.88% of our search space (9 of 288 runs failed).
 
 to analyze the benchmark results, we first aggregated (`np.mean`) the performance metrics for each configuration across all datasets.
-
-![accuracy score heatmap](./output/viz/heatmap_accuracy_score.png)
-
-![balanced accuracy score heatmap](./output/viz/heatmap_balanced_accuracy_score.png)
-
-![precision score heatmap](./output/viz/heatmap_precision_score.png)
-
-![recall score heatmap](./output/viz/heatmap_recall_score.png)
-
-![time heatmap](./output/viz/heatmap_time.png)
 
 here's a summary of our findings:
 
