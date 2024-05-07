@@ -1,6 +1,6 @@
 services:
     main:
-        container_name: new-project
+        container_name: grid-search-galore
 
         # build with dockerfile
         # do as little as possible in this file to enable caching
