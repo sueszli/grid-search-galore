@@ -199,18 +199,63 @@ we then continued to fine-tune the hyperparameters of the best models for each d
 
 # conclusion
 
-first of all, although we have already discussed our results and learnings from our configuration exploration in 2.2.1, we would also like to showcase the details and actual numeric results of our best models, together with the preprocessing strategies and most important/sensitive hyperparameter settings used in their training.
+for the `congress` dataset, we actually had a tie between knn and rf concerning model performance, but we decided to present our results for rf here, since the settings for our final model are a little more interesting as we had to do more parameter testing to find the optimal setup.
 
-for the `congress` dataset, we actually had a tie between knn and rf concerning model performance, but we decided to present our results for rf here, since the settings for our final model are a little more interesting as we had to do more parameter testing to find the optimal setup. additionally, this way, we can show our chosen parameters for all three classifiers we selected.
+-   `congress`:
 
--   `congress`: - classifier: rf - preprocessing strategies: - scaling: normal - encoding: one-hot - impute: mode - important hyperparameter settings: - n_estimators: 30 - criterion: log_loss - max_depth: 50 - min_samples_split: 2 - metrics: - accuracy: 0.97727 - balanced_accuracy: 0.96153 - precision: 0.97846 - recall: 0.97727
-    <br>
+    -   classifier: rf
+    -   preprocessing strategies:
+        -   scaling: normal
+        -   encoding: one-hot
+        -   impute: mode
+    -   important hyperparameter settings:
+        -   n_estimators: 30
+        -   criterion: log_loss
+        -   max_depth: 50
+        -   min_samples_split: 2
+    -   metrics:
+        -   accuracy: 0.97727 🔥
+        -   balanced_accuracy: 0.96153
+        -   precision: 0.97846
+        -   recall: 0.97727
 
--   `mushrooms`: - classifier: knn - preprocessing strategies: - scaling: minmax - encoding: labeling - impute: mode - important hyperparameter settings: - n_neighbors: 5 - weights: distance - algorithm: ball_tree - leaf_size: 1 - p: 2 - metrics: - accuracy: 0.99926 - balanced_accuracy: 0.99856 - precision: 0.99926 - recall: 0.99926
-    <br>
+-   `mushrooms`:
 
--   `reviews`: - classifier: mlp - preprocessing strategies: - scaling: normal - encoding: one-hot - impute: mode - important hyperparameter settings: - hidden_layer_sizes: [500] - activation: logistic - learning_rate: constant - learning_rate_init: 0.001 - max_iter: 500 - metrics: - accuracy: 0.69333 - balanced_accuracy: 0.71099 - precision: 0.76454 - recall: 0.72222
-    <br>
+    -   classifier: knn
+    -   preprocessing strategies:
+        -   scaling: minmax
+        -   encoding: labeling
+        -   impute: mode
+    -   important hyperparameter settings:
+        -   n_neighbors: 5
+        -   weights: distance
+        -   algorithm: ball_tree
+        -   leaf_size: 1
+        -   p: 2
+    -   metrics:
+        -   accuracy: 0.99926 🔥
+        -   balanced_accuracy: 0.99856
+        -   precision: 0.99926
+        -   recall: 0.99926
+
+-   `reviews`:
+
+    -   classifier: mlp
+    -   preprocessing strategies:
+        -   scaling: normal
+        -   encoding: one-hot
+        -   impute: mode
+    -   important hyperparameter settings:
+        -   hidden_layer_sizes: 500
+        -   activation: logistic
+        -   learning_rate: constant
+        -   learning_rate_init: 0.001
+        -   max_iter: 500
+    -   metrics:
+        -   accuracy: 0.69333
+        -   balanced_accuracy: 0.71099
+        -   precision: 0.76454
+        -   recall: 0.72222
 
 -   `seattle`:
     -   classifier: mlp
@@ -219,7 +264,7 @@ for the `congress` dataset, we actually had a tie between knn and rf concerning 
         -   encoding: one-hot
         -   impute: mode
     -   important hyperparameter settings:
-        -   hidden_layer_sizes: [100]
+        -   hidden_layer_sizes: 100
         -   activation: logistic
         -   learning_rate: constant
         -   learning_rate_init: 0.001
