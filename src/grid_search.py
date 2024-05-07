@@ -11,7 +11,7 @@ import sklearn.impute
 
 import statistics
 import random
-import math, json
+import math
 import numpy as np
 import pandas as pd
 from joblib import dump, load
@@ -20,6 +20,8 @@ import itertools
 import multiprocessing
 from timeit import default_timer as timer
 from pathlib import Path
+
+import sklearn.tree
 
 
 RANDOM_SEED = 42
@@ -308,7 +310,7 @@ X_seattle, y_seattle = DataReader.get_seattle_dataset()
 
 def run(arg):
     print(f"running... {arg=}")
-    dataset, scaling, labeling, imputing, classifier_type = arg
+    dataset, scaling, labeling, imputing, classifier_type, cross_val, dic = arg
 
     # 1) pick dataset, preprocess data
     X, y = None, None
@@ -331,79 +333,48 @@ def run(arg):
 
     # 2) pick model
     classifier = None
-    config = None
     if classifier_type == "mlp":
-        classifier, config = ClassifierConfigurator.get_mlp_classifier(X)
+        classifier = sklearn.neural_network.MLPClassifier()
     elif classifier_type == "knn":
-        classifier, config = ClassifierConfigurator.get_knn_classifier()
+        classifier = sklearn.neighbors.KNeighborsClassifier()
     elif classifier_type == "rf":
-        classifier, config = ClassifierConfigurator.get_rf_classifier()
+        classifier = sklearn.ensemble.RandomForestClassifier()
     else:
         raise ValueError(f"unknown classifier: {classifier_type}")
-    assert classifier is not None and config is not None
-    assert isinstance(classifier, sklearn.base.ClassifierMixin)
+    assert classifier is not None
 
-    # 3) split data, train model, evaluate model (time, accuracy) -> need more metrics
-    time = None
-    acc = None
-    try:
-        start_time = timer()
-        X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(X, y, test_size=0.2, random_state=RANDOM_SEED)
-        classifier.fit(X_train, y_train)
-        y_pred = classifier.predict(X_test)
-        acc = sklearn.metrics.accuracy_score(y_test, y_pred)
-        end_time = timer()
-        time = end_time - start_time
-
-        if MULTICORE:
-            # TODO implement multicore safe file writing
-            print(
-                f"dataset: {dataset}, scaling: {scaling}, labeling: {labeling}, imputing: {imputing}, cross_val: {cross_val}, time: {time}, acc: {acc}, classifier_type: {classifier_type}, classifier_config: {config}"
-            )
-            pass
-        else:
-            with open(f"reports\\AUTO\\{classifier_type}_{dataset}.json", "r") as f:
-                contents = f.readlines()
-
-            def add_quotes(val):
-                return '"' + val + '"'
-
-            if len(contents) > 2:
-                contents[-2] = contents[-2].replace("\n", ",\n")
-
-            contents.insert(
-                -1,
-                f'\t{"{"}"id": "", "Settings": {json.dumps(arg)}, "Scaling": {add_quotes(scaling) if scaling else scaling}, "Labeling": "{labeling}", "Impute": "{imputing}", "Holdout": {"{"}"Duration": {time}, "Accuracy": {acc}{"}"}{"}"}\r',
-            )
-
-            with open(f"reports\\AUTO\\{classifier_type}_{dataset}.json", "w") as f:
-                contents = "".join(contents)
-                f.write(contents)
-    except Exception as e:
-        print("error:", e)
+    # 3) grid search 🔥
+    grid = sklearn.model_selection.GridSearchCV(classifier, dic, n_jobs=10, verbose=2)
+    grid.fit(X, y)
+    res = pd.DataFrame(grid.cv_results_)
+    with open(f"reports/GridSearch.md", "a") as file:
+        file.write(
+            f"{dataset} {classifier_type} Settings: Scaling: {str(scaling)} Labeling/one-hot-encoding: {'labeling'if labeling else 'one-hot'} Impute missing with mean/own value: {'impute'if imputing else 'own value'}\n\n{res[res['rank_test_score']<4].to_markdown()}\n\n"
+        )
 
 
 if __name__ == "__main__":
     # anything within this function will be only ran by the master process
-
     COMBINATIONS = {
         "dataset": ["congress", "mushroom", "reviews", "seattle"],
         "scaling": ["mean", "minmax", None],
         "labeling": [True, False],
         "imputing": [True, False],
         "classifier_type": ["mlp", "knn", "rf"],
+        "cross_val": [True, False],
     }
-    random_combinations = list(itertools.product(*COMBINATIONS.values()))
-    random.shuffle(random_combinations)
-    print(f"{len(random_combinations)=}")
 
-    MULTICORE = False
-    ITERS = 10
+    # uncomment manually to try stuff out
+    models = [
+        # ["reviews", "mean", False, True, "mlp", False, {"hidden_layer_sizes": ((900,), (500,), (700,200), (500, 500), (500, 200, 100), (1500,)), "activation": ("identity", "logistic", "tanh", "relu"), "solver": ("lbfgs","sgd", "adam"), "tol":(1e-5,), "max_iter": [1000]}],
+        # ["reviews", "minmax", False, True, "mlp", False, {"hidden_layer_sizes": ((700,), (500,), (300,), (400,), (100,), (1000,), (1000,100)), "activation": ("logistic",), "solver": ("lbfgs","sgd", "adam"), "tol":(1e-5,), "max_iter": [5000]}],
+        # ["seattle", "mean", False, True, "mlp", False, {"hidden_layer_sizes": ((100,), (200,), (200,100),), "activation": ("identity", "logistic", "relu"), "tol":(1e-4,), "max_iter": [100]}],
+        # ["seattle", None, True, False, "rf", False, {"n_estimators":(15,30,50), "criterion": ("gini", "entropy", "log_loss"), "max_depth": (7, 12, 20, 50)}],
+        # ["congress", None, False, False, "knn", False, {"n_neighbors":(5,9,15,21), "weights": ("uniform", "distance"), "algorithm": ("auto", "ball_tree", "kd_tree", "brute")}],
+        # ["congress", "mean", False, True, "rf", False, {"n_estimators":(15,30,50), "criterion": ("gini", "entropy", "log_loss"), "max_depth": (7, 12, 20, 50), "max_features": ["sqrt", "log2", None]}],
+        # ["mushroom", "minmax", False, False, "mlp", False, {"hidden_layer_sizes": ((50, 20), (100,), (50,20,10)), "activation": ("identity", "logistic", "tanh", "relu"), "solver": ("lbfgs","sgd", "adam"),"learning_rate": ("constant", "invscaling", "adaptive"), "tol":(1e-5,), "max_iter": [500]}],
+        # ["mushroom", "minmax", True, True, "knn", False, {"n_neighbors":(5,9,11,15), "weights": ("uniform", "distance"), "algorithm": ("auto", "ball_tree", "kd_tree", "brute")}]
+    ]
 
-    if MULTICORE:
-        with multiprocessing.Pool() as pool:
-            pool.map(run, random_combinations[:ITERS])
-
-    if not MULTICORE:
-        while True:
-            run(random.choice(random_combinations))
+    for i in models:
+        run(i)
