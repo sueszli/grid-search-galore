@@ -1,0 +1,3 @@
+[
+    {"id":"eaccd0f5b3cc4c878347c674414f4632","Settings":{"hidden_layer_sizes":[50,30],"activation":"relu","alpha":0.0001,"batch_size":"auto","solver":"sgd","learning_rate":"adaptive","learning_rate_init":0.002,"power_t":0.5,"max_iter":400,"shuffle":true,"random_state":2,"tol":0.0005,"verbose":true,"warm_start":false,"momentum":0.9,"nesterovs_momentum":true,"early_stopping":false,"validation_fraction":0.1,"beta_1":0.9,"beta_2":0.999,"epsilon":1e-08,"n_iter_no_change":10,"max_fun":15000},"Scaling":null,"Labeling":"one-hot","Impute":"own value","Holdout":{"Duration":16.7325758934021,"Accuracy":0.9995906336990339},"CV":{"Splits":5,"Duration":81.43260192871094,"Accuracy":[0.99959063,0.99934501,0.99967251,0.99950876,0.99950872],"Mean":0.9995251270463437}}
+]

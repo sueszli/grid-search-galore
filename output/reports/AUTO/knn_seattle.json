@@ -1,0 +1,4 @@
+[
+    {"id":"","Settings":{"n_neighbors":11,"weights":"distance","algorithm":"auto","leaf_size":21,"p":1,"metric":"minkowski","metric_params":null,"n_jobs":10},"Scaling":null,"Labeling":"one-hot","Impute":"impute","Holdout":{"Duration":367.7324891999997,"Accuracy":0.43423289214843674}},
+    {"id":"","Settings":{"n_neighbors":9,"weights":"uniform","algorithm":"kd_tree","leaf_size":40,"p":1.5,"metric":"minkowski","metric_params":null,"n_jobs":10},"Scaling":"mean","Labeling":"one-hot","Impute":"own value","Holdout":{"Duration":2124.170451500002,"Accuracy":0.8085238449932198}}
+]

@@ -1,0 +1,5 @@
+[
+    {"id":"","Settings":{"n_neighbors":11,"weights":"distance","algorithm":"auto","leaf_size":32,"p":1,"metric":"minkowski","metric_params":null,"n_jobs":10},"Scaling":null,"Labeling":"one-hot","Impute":"own value","Holdout":{"Duration":3.6281976000000213,"Accuracy":1.0}},
+    {"id":"","Settings":{"n_neighbors":17,"weights":"uniform","algorithm":"auto","leaf_size":32,"p":2,"metric":"minkowski","metric_params":null,"n_jobs":10},"Scaling":null,"Labeling":"one-hot","Impute":"impute","Holdout":{"Duration":0.6981046999999307,"Accuracy":0.9979531684951695}},
+    {"id":"","Settings":{"n_neighbors":17,"weights":"distance","algorithm":"kd_tree","leaf_size":42,"p":1,"metric":"minkowski","metric_params":null,"n_jobs":10},"Scaling":"mean","Labeling":"labeling","Impute":"impute","Holdout":{"Duration":1.135297600000058,"Accuracy":0.9995087604388406}}
+]

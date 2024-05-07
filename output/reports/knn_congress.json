@@ -1,0 +1,4 @@
+[
+	{"id":"836bf420c69540ff8a240493ffc0d304","Settings":{"n_neighbors":5,"weights":"uniform","algorithm":"auto","leaf_size":30,"p":2,"metric":"minkowski","metric_params":null,"n_jobs":null},"Scaling":null,"Labeling":"one-hot","Impute":"own value","Holdout":{"Duration":0.004499912261962891,"Accuracy":0.9772727272727273},"CV":{"Splits":5,"Duration":0.021999359130859375,"Accuracy":[0.97727273,0.95454545,0.86363636,0.97674419,0.86046512],"Mean":0.9265327695560254}},
+	{"id":"congressfb02e5fc23ba4ef28f8e9c45a749e433","Settings":{"n_neighbors":5,"weights":"uniform","algorithm":"auto","leaf_size":30,"p":2,"metric":"minkowski","metric_params":null,"n_jobs":null},"Scaling":"minmax","Labeling":"one-hot","Impute":"own value","Holdout":{"Duration":0.009279012680053711,"Accuracy":0.9772727272727273},"CV":{"Splits":5,"Duration":0.03803277015686035,"Accuracy":[0.97727273,0.95454545,0.86363636,0.97674419,0.86046512],"Mean":0.9265327695560254}}
+]

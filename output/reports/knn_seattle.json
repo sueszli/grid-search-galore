@@ -1,0 +1,4 @@
+[
+    {"id":"8e819bfbae93422d8b0851811dbab7ca","Settings":{"n_neighbors":5,"weights":"uniform","algorithm":"auto","leaf_size":30,"p":2.0,"metric":"minkowski","metric_params":null,"n_jobs":-1},"Scaling":true,"Holdout":{"Duration":3.3630001544952393,"Accuracy":0.7988502454210356},"CV":{"Splits":5,"Duration":16.447999238967896,"Accuracy":[0.79887889,0.79855421,0.80002483,0.79711224,0.79997708],"Mean":0.7989094520521782}},
+    {"id":"647d200b62dc49d1861d7dedcfd35941","Settings":{"n_neighbors":5,"weights":"uniform","algorithm":"auto","leaf_size":30,"p":2.0,"metric":"minkowski","metric_params":null,"n_jobs":-1},"Scaling":false,"Holdout":{"Duration":2.654999017715454,"Accuracy":0.37370843598999215},"CV":{"Splits":5,"Duration":13.165997743606567,"Accuracy":[0.37388033,0.37461563,0.37224737,0.3716171,0.37289673],"Mean":0.37305143337344104}}
+]

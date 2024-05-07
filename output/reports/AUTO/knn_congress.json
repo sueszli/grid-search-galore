@@ -1,0 +1,6 @@
+[
+    {"id":"","Settings":{"n_neighbors":13,"weights":"uniform","algorithm":"ball_tree","leaf_size":34,"p":2,"metric":"minkowski","metric_params":null,"n_jobs":10},"Scaling":"minmax","Labeling":"one-hot","Impute":"impute","Holdout":{"Duration":0.015874900003836956,"Accuracy":0.9545454545454546}},
+    {"id":"","Settings":{"n_neighbors":13,"weights":"uniform","algorithm":"kd_tree","leaf_size":41,"p":1.5,"metric":"minkowski","metric_params":null,"n_jobs":10},"Scaling":"mean","Labeling":"one-hot","Impute":"impute","Holdout":{"Duration":0.01689279999845894,"Accuracy":0.9545454545454546}},
+    {"id":"","Settings":{"n_neighbors":11,"weights":"distance","algorithm":"auto","leaf_size":11,"p":1,"metric":"minkowski","metric_params":null,"n_jobs":10},"Scaling":"mean","Labeling":"one-hot","Impute":"own value","Holdout":{"Duration":0.004577700000027107,"Accuracy":0.9772727272727273}},
+    {"id":"","Settings":{"n_neighbors":9,"weights":"uniform","algorithm":"auto","leaf_size":41,"p":1.5,"metric":"minkowski","metric_params":null,"n_jobs":10},"Scaling":"mean","Labeling":"labeling","Impute":"own value","Holdout":{"Duration":0.01502260000052047,"Accuracy":0.9772727272727273}}
+]

@@ -1,0 +1,3 @@
+[
+	{"id":"6424964fb66b492da4f744b55d632255","Settings":{"n_estimators":10,"criterion":"gini","max_depth":12,"min_samples_split":2,"min_samples_leaf":1,"min_weight_fraction_leaf":0.0,"max_features":"sqrt","max_leaf_nodes":null,"min_impurity_decrease":0.0,"bootstrap":true,"oob_score":false,"n_jobs":-1,"random_state":2,"verbose":0,"warm_start":false,"class_weight":null,"ccp_alpha":0.0,"max_samples":null,"monotonic_cst":null},"Scaling":null,"Labeling":"one-hot","Impute":"own value","Holdout":{"Duration":0.08199667930603027,"Accuracy":0.9858359259865728},"CV":{"Splits":5,"Duration":0.4194982051849365,"Accuracy":[0.98305224,0.99320452,0.98739152,0.98395284,0.98272333],"Mean":0.9860648882156149}}
+]

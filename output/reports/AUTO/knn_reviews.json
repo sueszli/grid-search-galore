@@ -1,0 +1,7 @@
+[
+    {"id":"","Settings":{"n_neighbors":13,"weights":"distance","algorithm":"ball_tree","leaf_size":35,"p":1.5,"metric":"minkowski","metric_params":null,"n_jobs":10},"Scaling":null,"Labeling":"labeling","Impute":"impute","Holdout":{"Duration":1.2023920999999973,"Accuracy":0.32}},
+    {"id":"","Settings":{"n_neighbors":7,"weights":"distance","algorithm":"brute","leaf_size":28,"p":2,"metric":"minkowski","metric_params":null,"n_jobs":10},"Scaling":null,"Labeling":"labeling","Impute":"own value","Holdout":{"Duration":0.10458189999917522,"Accuracy":0.24}},
+    {"id":"","Settings":{"n_neighbors":9,"weights":"distance","algorithm":"ball_tree","leaf_size":11,"p":1.5,"metric":"minkowski","metric_params":null,"n_jobs":10},"Scaling":"mean","Labeling":"one-hot","Impute":"impute","Holdout":{"Duration":1.7864391999974032,"Accuracy":0.09333333333333334}},
+    {"id":"","Settings":{"n_neighbors":17,"weights":"distance","algorithm":"brute","leaf_size":14,"p":4,"metric":"minkowski","metric_params":null,"n_jobs":10},"Scaling":"mean","Labeling":"labeling","Impute":"own value","Holdout":{"Duration":3.0155474000000027,"Accuracy":0.06666666666666667}},
+	{"id": "", "Settings": ["reviews", null, true, false, "knn"], "Scaling": "None", "Labeling": "True", "Impute": "False", "Holdout": {"Duration": 1.1682402999940678, "Accuracy": 0.2866666666666667}}
+]
