@@ -1,0 +1,17 @@
+services:
+    main:
+        container_name: new-project
+
+        # build with dockerfile
+        # do as little as possible in this file to enable caching
+        build: .
+
+        # pytorch multiprocessing support
+        # for gpu access see: https://docs.docker.com/compose/gpu-support/
+        stdin_open: true
+        tty: true
+        ipc: host
+
+        # map container ports to host ports
+        ports:
+            - '8888:8888'
