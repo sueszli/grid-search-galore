@@ -5,9 +5,9 @@
          .-'      `-.
        .'            `.
       /                \
-     ;    grid         ;`    beyond just
-     |    search       |;    hyperparameter optimization
-     ;    galore       ;|
+     ;    grid         ;`   beyond just
+     |    search       |;   hyperparameter
+     ;    galore       ;|   optimization
      '\               / ;
       \`.           .' /
        `.`-._____.-' .'
